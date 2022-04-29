@@ -12,14 +12,14 @@ function getProductsData() {
 }
 
 function createProductElement(product) {
-  const productTemplateElement = document.querySelector('#template-product');
-  const productCloneElement = document.importNode(productTemplateElement.content, true);
-  productCloneElement.querySelector('a').href = `./product.html?id=${product._id}`;
-  productCloneElement.querySelector('img').src = product.imageUrl;
-  productCloneElement.querySelector('img').alt = product.altTxt;
-  productCloneElement.querySelector('.productName').textContent = product.name;
-  productCloneElement.querySelector('.productDescription').textContent = product.description;
-  return productCloneElement;
+  const productTemplate = document.querySelector('#template-product');
+  const productClone = document.importNode(productTemplate.content, true);
+  productClone.querySelector('a').href = `./product.html?id=${product._id}`;
+  productClone.querySelector('img').src = product.imageUrl;
+  productClone.querySelector('img').alt = product.altTxt;
+  productClone.querySelector('.productName').textContent = product.name;
+  productClone.querySelector('.productDescription').textContent = product.description;
+  return productClone;
 }
 
 function displayProducts(productsData) {
