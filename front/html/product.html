@@ -50,52 +50,47 @@
   <main class="limitedWidthBlockContainer">
     <div class="limitedWidthBlock">
       <section class="item">
-        <article>
-          <div class="item__img">
-            <!-- <img src="../images/logo.png" alt="Photographie d'un canapé"> -->
-          </div>
-          <div class="item__content">
 
-            <div class="item__content__titlePrice">
-              <h1 id="title">
-                <!-- Nom du produit -->
-              </h1>
-              <p>Prix : <span id="price">
-                  <!-- 42 -->
-                </span>€</p>
+        <template id="template-product">
+          <article>
+            <div class="item__img">
+              <img src="" alt="">
             </div>
 
-            <div class="item__content__description">
-              <p class="item__content__description__title">Description :</p>
-              <p id="description">
-                <!-- Dis enim malesuada risus sapien gravida nulla nisl arcu. -->
-              </p>
-            </div>
-
-            <div class="item__content__settings">
-              <div class="item__content__settings__color">
-                <label for="color-select">Choisir une couleur :</label>
-                <select name="color-select" id="colors">
-                  <option value="">--SVP, choisissez une couleur --</option>
-                  <!-- 
-                  <option value="vert">vert</option>
-                  <option value="blanc">blanc</option>
-                   -->
-                </select>
+            <div class="item__content">
+              <div class="item__content__titlePrice">
+                <h1 id="title"></h1>
+                <p>Prix : <span id="price">42</span>€</p>
               </div>
 
-              <div class="item__content__settings__quantity">
-                <label for="itemQuantity">Nombre d'article(s) (1-100) :</label>
-                <input type="number" name="itemQuantity" min="1" max="100" value="0" id="quantity">
+              <div class="item__content__description">
+                <p class="item__content__description__title">Description :</p>
+                <p id="description"></p>
+              </div>
+
+              <div class="item__content__settings">
+                <div class="item__content__settings__color">
+                  <label for="color-select">Choisir une couleur :</label>
+                  <select name="color-select" id="colors">
+                    <option value="" disabled>Choisissez une couleur</option>
+                    <option value="vert">vert</option>
+                    <option value="blanc">blanc</option>
+                  </select>
+                </div>
+
+                <div class="item__content__settings__quantity">
+                  <label for="itemQuantity">Nombre d'article(s) (1-100) :</label>
+                  <input type="number" name="itemQuantity" min="1" max="100" value="1" id="quantity">
+                </div>
+              </div>
+
+              <div class="item__content__addButton">
+                <button id="addToCart">Ajouter au panier</button>
               </div>
             </div>
+          </article>
+        </template>
 
-            <div class="item__content__addButton">
-              <button id="addToCart">Ajouter au panier</button>
-            </div>
-
-          </div>
-        </article>
       </section>
     </div>
   </main>
@@ -123,7 +118,7 @@
       </div>
     </div>
   </footer>
-  <script type="module" src="../js/product.js"></script>
+  <script type="module" src="../js/product.js" async></script>
 </body>
 
 </html>
