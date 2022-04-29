@@ -19,35 +19,42 @@ function getProductData(productId) {
 }
 
 function createProductElement(product) {
-  const productTemplateElement = document.querySelector('#template-product');
-  const productCloneElement = document.importNode(productTemplateElement.content, true);
-  const colorsSelect = productCloneElement.querySelector('#colors');
-  const quantityInput = productCloneElement.querySelector('#quantity');
-  const addToCartButton = productCloneElement.querySelector('#addToCart');
-  productCloneElement.querySelector('img').src = product.imageUrl;
-  productCloneElement.querySelector('img').alt = product.altTxt;
-  productCloneElement.querySelector('#title').textContent = product.name;
-  productCloneElement.querySelector('#price').textContent = product.price;
-  productCloneElement.querySelector('#description').textContent = product.description;
+  const productTemplate = document.querySelector('#template-product');
+  const productClone = document.importNode(productTemplate.content, true);
+  const colorSelect = productClone.querySelector('#colors');
+  const quantityInput = productClone.querySelector('#quantity');
+  const addToCartButton = productClone.querySelector('#addToCart');
+  productClone.querySelector('img').src = product.imageUrl;
+  productClone.querySelector('img').alt = product.altTxt;
+  productClone.querySelector('#title').textContent = product.name;
+  productClone.querySelector('#price').textContent = product.price;
+  productClone.querySelector('#description').textContent = product.description;
   product.colors.forEach(color => {
     const optionElement = document.createElement('option');
     optionElement.value = color;
     optionElement.textContent = color;
-    colorsSelect.appendChild(optionElement);
+    colorSelect.appendChild(optionElement);
   });
   addToCartButton.addEventListener('click', () => {
-    addToCart(product._id, quantityInput.value);
+    addToCart(product._id, colorSelect.value, +quantityInput.value);
   });
-  return productCloneElement;
+  return productClone;
 }
 
 function displayProduct(productData) {
   const itemContainer = document.querySelector('.item');
   const productElement = createProductElement(productData);
-  console.log(productData);
   itemContainer.appendChild(productElement);
 }
 
-function addToCart(id, quantity) {
-  return '';
+function addToCart(id, color, quantity) {
+  const cartData = JSON.parse(localStorage.getItem('cartData')) || [];
+  const product = { id, color, quantity };
+  const productAlreadyInCart = cartData.findIndex(product => product.id === id && product.color === color);
+  if (quantity > 0 && quantity <= 100) {
+    productAlreadyInCart === -1 ? cartData.push(product) : (cartData[productAlreadyInCart].quantity += quantity);
+  } else {
+    alert('La quantité de produit à ajouter au panier doit se trouver entre 1 et 100');
+  }
+  localStorage.setItem('cartData', JSON.stringify(cartData));
 }
