@@ -1,6 +1,6 @@
 import { apiUrl } from './config.js';
 
-(async function initApp() {
+(async function () {
   const productsData = await getProductsData();
   displayProducts(productsData);
 })();
