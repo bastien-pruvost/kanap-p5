@@ -1,21 +1,14 @@
-import { apiUrl } from './config.js';
+import { getData } from './utils.js';
 
 (async function () {
-  const productId = await getProductId();
-  const productData = await getProductData(productId);
+  const productId = getProductId();
+  const productData = await getData(productId);
   displayProduct(productData);
 })();
 
 function getProductId() {
   const currentUrl = new URL(location);
-  const idSearchParam = currentUrl.searchParams.get('id');
-  return idSearchParam;
-}
-
-function getProductData(productId) {
-  return fetch(`${apiUrl}/api/products/${productId}`)
-    .then(response => response.json())
-    .catch(error => alert(`Impossible d'accéder au serveur (${error.message})`));
+  return currentUrl.searchParams.get('id');
 }
 
 function createProductElement(product) {

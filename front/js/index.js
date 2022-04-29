@@ -1,17 +1,11 @@
-import { apiUrl } from './config.js';
+import { getData } from './utils.js';
 
 (async function () {
-  const productsData = await getProductsData();
+  const productsData = await getData();
   displayProducts(productsData);
 })();
 
-function getProductsData() {
-  return fetch(`${apiUrl}/api/products`)
-    .then(response => response.json())
-    .catch(error => alert(`Impossible d'accéder au serveur (${error.message})`));
-}
-
-function createProductElement(product) {
+function createProductCardElement(product) {
   const productTemplate = document.querySelector('#template-product');
   const productClone = document.importNode(productTemplate.content, true);
   productClone.querySelector('a').href = `./product.html?id=${product._id}`;
@@ -25,7 +19,7 @@ function createProductElement(product) {
 function displayProducts(productsData) {
   const itemsContainer = document.querySelector('#items');
   for (const product of productsData) {
-    const productElement = createProductElement(product);
+    const productElement = createProductCardElement(product);
     itemsContainer.appendChild(productElement);
   }
 }
