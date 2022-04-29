@@ -1,10 +1,8 @@
 import { getData } from './utils.js';
 
-(async function () {
-  const productId = getProductId();
-  const productData = await getData(productId);
-  displayProduct(productData);
-})();
+const productId = getProductId();
+const productData = await getData(productId);
+displayProduct(productData);
 
 function getProductId() {
   const currentUrl = new URL(location);
@@ -35,9 +33,9 @@ function createProductElement(product) {
 }
 
 function displayProduct(productData) {
-  const itemContainer = document.querySelector('.item');
+  const productContainer = document.querySelector('.item');
   const productElement = createProductElement(productData);
-  itemContainer.appendChild(productElement);
+  productContainer.appendChild(productElement);
 }
 
 function addToCart(id, color, quantity) {

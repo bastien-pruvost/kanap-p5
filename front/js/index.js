@@ -1,9 +1,7 @@
 import { getData } from './utils.js';
 
-(async function () {
-  const productsData = await getData();
-  displayProducts(productsData);
-})();
+const productsData = await getData();
+displayProductCards(productsData);
 
 function createProductCardElement(product) {
   const productTemplate = document.querySelector('#template-product');
@@ -16,10 +14,10 @@ function createProductCardElement(product) {
   return productClone;
 }
 
-function displayProducts(productsData) {
-  const itemsContainer = document.querySelector('#items');
+function displayProductCards(productsData) {
+  const galleryContainer = document.querySelector('#items');
   for (const product of productsData) {
     const productElement = createProductCardElement(product);
-    itemsContainer.appendChild(productElement);
+    galleryContainer.appendChild(productElement);
   }
 }
