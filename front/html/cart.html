@@ -89,27 +89,25 @@
               </span> €</p>
           </div>
           <div class="cart__order">
-            <form method="get" class="cart__order__form">
+            <form method="POST" class="cart__order__form">
               <div class="cart__order__form__question">
                 <label for="firstName">Prénom: </label>
-                <input type="text" name="firstName" id="firstName" required>
-                <p id="firstNameErrorMsg">
-                  <!-- ci est un message d'erreur -->
-                </p>
+                <input type="text" name="firstName" id="firstName" pattern="^[A-Za-zÀ-ÖØ-öø-ÿ-]+$" minlength="2" required>
+                <p id="firstNameErrorMsg"> </p>
               </div>
               <div class="cart__order__form__question">
                 <label for="lastName">Nom: </label>
-                <input type="text" name="lastName" id="lastName" required>
+                <input type="text" name="lastName" id="lastName" minlength="2" required>
                 <p id="lastNameErrorMsg"></p>
               </div>
               <div class="cart__order__form__question">
                 <label for="address">Adresse: </label>
-                <input type="text" name="address" id="address" required>
+                <input type="text" name="address" id="address" minlength="5" required>
                 <p id="addressErrorMsg"></p>
               </div>
               <div class="cart__order__form__question">
                 <label for="city">Ville: </label>
-                <input type="text" name="city" id="city" required>
+                <input type="text" name="city" id="city" minlength="2" required>
                 <p id="cityErrorMsg"></p>
               </div>
               <div class="cart__order__form__question">
