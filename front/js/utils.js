@@ -1,6 +1,6 @@
 import { apiUrl } from './config.js';
 
-async function getApiData(productId) {
+function getApiData(productId) {
   const fetchRequest = productId ? `${apiUrl}/api/products/${productId}` : `${apiUrl}/api/products`;
   return fetch(fetchRequest)
     .then(response => response.json())
