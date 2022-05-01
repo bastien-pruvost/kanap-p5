@@ -1,7 +1,6 @@
-import { getData } from './utils.js';
+import { getApiData } from './utils.js';
 
-const productsData = await getData();
-displayProductCards(productsData);
+displayProductCards();
 
 function createProductCardElement(product) {
   const productTemplate = document.querySelector('#template-product');
@@ -14,10 +13,11 @@ function createProductCardElement(product) {
   return productClone;
 }
 
-function displayProductCards(productsData) {
-  const galleryContainer = document.querySelector('#items');
+async function displayProductCards() {
+  const productsData = await getApiData();
+  const container = document.querySelector('#items');
   for (const product of productsData) {
     const productElement = createProductCardElement(product);
-    galleryContainer.appendChild(productElement);
+    container.appendChild(productElement);
   }
 }

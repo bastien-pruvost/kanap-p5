@@ -1,8 +1,7 @@
-import { getData } from './utils.js';
+import { getApiData } from './utils.js';
 
 const productId = getProductId();
-const productData = await getData(productId);
-displayProduct(productData);
+displayProduct();
 
 function getProductId() {
   const currentUrl = new URL(location);
@@ -32,10 +31,11 @@ function createProductElement(product) {
   return productClone;
 }
 
-function displayProduct(productData) {
-  const productContainer = document.querySelector('.item');
+async function displayProduct() {
+  const productData = await getApiData(productId);
+  const container = document.querySelector('.item');
   const productElement = createProductElement(productData);
-  productContainer.appendChild(productElement);
+  container.appendChild(productElement);
 }
 
 function addToCart(id, color, quantity) {
