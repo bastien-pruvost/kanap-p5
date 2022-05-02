@@ -82,11 +82,7 @@
           </template>
 
           <div class="cart__price">
-            <p>Total (<span id="totalQuantity">
-                <!-- 2 -->
-              </span> articles) : <span id="totalPrice">
-                <!-- 84,00 -->
-              </span> €</p>
+            <p>Total (<span id="totalQuantity"></span> articles) : <span id="totalPrice"></span> €</p>
           </div>
           <div class="cart__order">
             <form method="POST" class="cart__order__form">
@@ -97,7 +93,7 @@
               </div>
               <div class="cart__order__form__question">
                 <label for="lastName">Nom: </label>
-                <input type="text" name="lastName" id="lastName" minlength="2" required>
+                <input type="text" name="lastName" id="lastName" pattern="^[A-Za-zÀ-ÖØ-öø-ÿ-]+$" minlength="2" required>
                 <p id="lastNameErrorMsg"></p>
               </div>
               <div class="cart__order__form__question">

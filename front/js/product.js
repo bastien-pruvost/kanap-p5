@@ -1,6 +1,5 @@
 import { getApiData } from './utils.js';
 
-const productId = getProductId();
 displayProduct();
 
 function getProductId() {
@@ -32,6 +31,7 @@ function createProductElement(product) {
 }
 
 async function displayProduct() {
+  const productId = getProductId();
   const productData = await getApiData(productId);
   const container = document.querySelector('.item');
   const productElement = createProductElement(productData);

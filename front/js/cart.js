@@ -66,7 +66,7 @@ function initOrderForm() {
   const inputs = document.querySelectorAll('.cart__order__form__question>input');
   form.addEventListener('submit', event => {
     event.preventDefault();
-    isFormValid(inputs) && sendOrder(formatedOrder(form));
+    isFormValid(inputs) && sendOrder(formatOrder(form));
   });
 }
 
@@ -76,7 +76,7 @@ function isFormValid(inputs) {
   return isValid;
 }
 
-function formatedOrder(form) {
+function formatOrder(form) {
   const formData = new FormData(form);
   const formEntries = formData.entries();
   let contactObject = Object.fromEntries(formEntries);
