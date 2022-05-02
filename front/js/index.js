@@ -2,6 +2,11 @@ import { getApiData } from './utils.js';
 
 displayProductCards();
 
+/*
+ * Create an HTML Element with all infos of the product passed as argument
+ * @param { Object } product - Product as an object (comes from api)
+ * @return { HTMLElement } - HTML Element ready to be displayed in the dom
+ */
 function createProductCardElement(product) {
   const productTemplate = document.querySelector('#template-product');
   const productClone = document.importNode(productTemplate.content, true);
@@ -13,6 +18,7 @@ function createProductCardElement(product) {
   return productClone;
 }
 
+// Displays in the 'items' container all the products available in the API
 async function displayProductCards() {
   const productsData = await getApiData();
   const container = document.querySelector('#items');
