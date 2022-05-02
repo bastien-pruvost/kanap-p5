@@ -99,23 +99,31 @@ h2 {
 .cart__order__form__question {
   display: flex;
   flex-direction: column;
-  margin-bottom: 25px;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+.cart__order__form__question label {
+  margin-left: 8px;
 }
 .cart__order__form__question input {
   border-radius: 13px;
-  border: 0;
+  border: 2px solid white;
   height: 26px;
-  margin-top: 4px;
+  margin: 5px 0;
   padding: 1px 10px;
+  font-size: 16px;
+}
+.cart__order__form__question input.error {
+  border: 2px solid rgb(243, 65, 65);
 }
 .cart__order__form__question input:focus {
   outline: none;
 }
 .cart__order__form__question p {
-  margin: 0;
-  color: #8a2e2e;
-  font-size: 15px;
-  margin-left: 8px;
+  margin: 0 8px;
+  color: #fff1f1;
+  font-size: 16px;
+  height: 16px;
 }
 .cart__order__form__submit {
   display: flex;
