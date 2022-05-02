@@ -1,14 +1,14 @@
 import { getApiData } from './utils.js';
 import { apiUrl } from './config.js';
 
-let productsData;
 let cartData = JSON.parse(localStorage.getItem('cartData'));
 
 displayCart();
 initOrderForm();
 
 async function createCartItemElement(cartItem) {
-  const productData = productsData.find(product => product._id === cartItem.id);
+  // const productData = productsData.find(product => product._id === cartItem.id);
+  const productData = await getApiData(cartItem.id);
   const cartItemTemplate = document.querySelector('#template-cart-item');
   const cartItemClone = document.importNode(cartItemTemplate.content, true);
   const cartItemQuantity = cartItemClone.querySelector('.itemQuantity');
@@ -25,7 +25,7 @@ async function createCartItemElement(cartItem) {
 }
 
 async function displayCart() {
-  productsData = await getApiData();
+  // const productsData = await getApiData();
   const container = document.querySelector('#cart__items');
   for (const cartItem of cartData) {
     const cartItemElement = await createCartItemElement(cartItem);
@@ -49,7 +49,8 @@ function deleteItem(cartItem, event) {
   updateTotal();
 }
 
-function updateTotal() {
+async function updateTotal() {
+  const productsData = await getApiData();
   const totalQuantityContainer = document.querySelector('#totalQuantity');
   const totalPriceContainer = document.querySelector('#totalPrice');
   const totalQuantity = cartData.reduce((acc, curr) => acc + curr.quantity, 0);
@@ -62,18 +63,74 @@ function updateTotal() {
 }
 
 function initOrderForm() {
+  const inputs = document.querySelectorAll('.cart__order__form__question > input');
   const form = document.querySelector('.cart__order__form');
-  const inputs = document.querySelectorAll('.cart__order__form__question>input');
+  inputsValidation(inputs);
   form.addEventListener('submit', event => {
     event.preventDefault();
     isFormValid(inputs) && sendOrder(formatOrder(form));
   });
 }
 
+function inputsValidation(inputs) {
+  inputs.forEach(input => {
+    input.addEventListener('change', event => {
+      checkRegex(event.target);
+    });
+  });
+}
+
+function checkRegex(input) {
+  let regex;
+  let message;
+  switch (input.id) {
+    case 'firstName':
+      regex = /^[A-Za-zÀ-ÖØ-öø-ÿ-]+$/;
+      message = 'Le nom ne doit contenir que des lettres, lettres avec accents ou tirets';
+      break;
+    case 'lastName':
+      regex = /^[A-Za-zÀ-ÖØ-öø-ÿ-]+$/;
+      message = 'Le prénom ne doit contenir que des lettres, lettres avec accents ou tirets';
+      break;
+    case 'address':
+      regex = /^['0-9 A-Za-zÀ-ÖØ-öø-ÿ-]+$/;
+      message = "L'adresse n'est pas au bon format (pas de caractères spéciaux)";
+      break;
+    case 'city':
+      regex = /[A-Za-zÀ-ÖØ-öø-ÿ-]+$/;
+      message = "La ville n'est pas au bon format";
+      break;
+    case 'email':
+      regex =
+        /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      message = 'email test';
+      break;
+  }
+  if (input.value.match(regex)) {
+    displayError(input, '');
+    return true;
+  } else {
+    displayError(input, message);
+    return false;
+  }
+}
+
 function isFormValid(inputs) {
-  let isValid = true;
-  inputs.forEach(input => (isValid &= input.reportValidity()));
-  return isValid;
+  let valid = true;
+  inputs.forEach(input => {
+    valid &= checkRegex(input);
+  });
+  return valid;
+}
+
+function displayError(input, message) {
+  const errorContainer = input.nextElementSibling;
+  errorContainer.textContent = message;
+  if (message !== '') {
+    input.classList.add('error');
+  } else {
+    input.classList.remove('error');
+  }
 }
 
 function formatOrder(form) {
@@ -86,20 +143,27 @@ function formatOrder(form) {
       productsArray.push(item.id);
     }
   });
+  let order = {};
   order.contact = contactObject;
   order.products = productsArray;
   return order;
 }
 
 function sendOrder(orderData) {
-  const fetchSettings = {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(orderData)
-  };
-  fetch(`${apiUrl}/api/products/order`, fetchSettings)
-    .then(response => response.json())
-    .then(bodyResponse => {
-      window.location.href = `./confirmation.html?orderid=${bodyResponse.orderId}`;
-    });
+  if (orderData.products && orderData.products.length > 0) {
+    const fetchSettings = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(orderData)
+    };
+    fetch(`${apiUrl}/api/products/order`, fetchSettings)
+      .then(response => response.json())
+      .then(bodyResponse => {
+        localStorage.setItem('cartData', JSON.stringify([]));
+        window.location.href = `./confirmation.html?orderid=${bodyResponse.orderId}`;
+      })
+      .catch(error => alert(`Votre commande n'a pas pu aboutir (${error.message})`));
+  } else {
+    alert('Votre panier est vide, impossible de confirmer la commande');
+  }
 }
