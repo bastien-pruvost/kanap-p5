@@ -2,11 +2,29 @@ import { getApiData } from './utils.js';
 
 displayProduct();
 
+// Displays the product whose id is in the url. Product information is retrieved from the API
+async function displayProduct() {
+  const productId = getProductId();
+  const productData = await getApiData(productId);
+  const container = document.querySelector('.item');
+  const productElement = createProductElement(productData);
+  container.appendChild(productElement);
+}
+
+/**
+ * Retrieve the product id present in the url
+ * @return { String } - Id of the product
+ */
 function getProductId() {
   const currentUrl = new URL(location);
   return currentUrl.searchParams.get('id');
 }
 
+/**
+ * Create an HTML Element with the informations of the product passed as argument
+ * @param { Object } product - Product as an object (comes from api)
+ * @return { HTMLElement } - HTML Element ready to be displayed in the dom
+ */
 function createProductElement(product) {
   const productTemplate = document.querySelector('#template-product');
   const productClone = document.importNode(productTemplate.content, true);
@@ -30,14 +48,12 @@ function createProductElement(product) {
   return productClone;
 }
 
-async function displayProduct() {
-  const productId = getProductId();
-  const productData = await getApiData(productId);
-  const container = document.querySelector('.item');
-  const productElement = createProductElement(productData);
-  container.appendChild(productElement);
-}
-
+/**
+ * Create a product object and add it to the cart (Cart is in the LocalStorage with the key 'cartData')
+ * @param { String } id - Id of the product we want to add in cart
+ * @param { String } color - Color of the product we want to add in cart
+ * @param { Number } quantity - Quantity of the product we want to add in cart
+ */
 function addToCart(id, color, quantity) {
   const cartData = JSON.parse(localStorage.getItem('cartData')) || [];
   const product = { id, color, quantity };
