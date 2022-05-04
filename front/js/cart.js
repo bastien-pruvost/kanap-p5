@@ -1,6 +1,7 @@
 import { getApiData } from './utils.js';
 import { apiUrl } from './config.js';
 
+// Display the Cart and initialize the Order Form
 displayCart();
 initOrderForm();
 
