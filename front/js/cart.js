@@ -7,6 +7,7 @@ initOrderForm();
 
 // Displays the products present in the cart (retrieved from the localStorage)
 async function displayCart() {
+  let cartData = JSON.parse(localStorage.getItem('cartData'));
   const container = document.querySelector('#cart__items');
   for (const cartItem of cartData) {
     const cartItemElement = await createCartItemElement(cartItem);
