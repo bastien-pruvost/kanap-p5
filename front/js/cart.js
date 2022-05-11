@@ -33,7 +33,9 @@ async function createCartItemElement(cartItem) {
   cartItemClone.querySelector('.cart-item-color').textContent = cartItem.color;
   cartItemClone.querySelector('.cart-item-price').textContent = `${productData.price} €`;
   cartItemQuantity.value = cartItem.quantity;
-  cartItemQuantity.addEventListener('input', event => updateItemQuantity(cartItem, event.target.value));
+  cartItemQuantity.addEventListener('input', event =>
+    updateItemQuantity(cartItem, event.target.value)
+  );
   cartItemDeleteButton.addEventListener('click', event => deleteItem(cartItem, event));
   return cartItemClone;
 }
@@ -45,7 +47,9 @@ async function createCartItemElement(cartItem) {
  */
 function updateItemQuantity(cartItem, value) {
   let cartData = JSON.parse(localStorage.getItem('cartData'));
-  const itemIndex = cartData.findIndex(item => item.id === cartItem.id && item.color === cartItem.color);
+  const itemIndex = cartData.findIndex(
+    item => item.id === cartItem.id && item.color === cartItem.color
+  );
   cartData[itemIndex].quantity = +value;
   localStorage.setItem('cartData', JSON.stringify(cartData));
   updateTotal();
@@ -58,7 +62,9 @@ function updateItemQuantity(cartItem, value) {
  */
 function deleteItem(cartItem, event) {
   let cartData = JSON.parse(localStorage.getItem('cartData'));
-  const itemIndex = cartData.findIndex(item => item.id === cartItem.id && item.color === cartItem.color);
+  const itemIndex = cartData.findIndex(
+    item => item.id === cartItem.id && item.color === cartItem.color
+  );
   event.target.closest('.cart__item').remove();
   cartData.splice(itemIndex, 1);
   localStorage.setItem('cartData', JSON.stringify(cartData));
@@ -187,9 +193,10 @@ function formatOrder(form) {
       productsArray.push(item.id);
     }
   });
-  let order = {};
-  order.contact = contactObject;
-  order.products = productsArray;
+  let order = {
+    contact: contactObject,
+    products: productsArray
+  };
   return order;
 }
 
