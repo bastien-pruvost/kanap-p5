@@ -1,5 +1,4 @@
-import { getApiData } from './utils.js';
-import { apiUrl } from './config.js';
+import { getApiData, postApiOrder } from './utils.js';
 
 // Display the Cart and initialize the Order Form
 displayCart();
@@ -33,9 +32,7 @@ async function createCartItemElement(cartItem) {
   cartItemClone.querySelector('.cart-item-color').textContent = cartItem.color;
   cartItemClone.querySelector('.cart-item-price').textContent = `${productData.price} €`;
   cartItemQuantity.value = cartItem.quantity;
-  cartItemQuantity.addEventListener('input', event =>
-    updateItemQuantity(cartItem, event.target.value)
-  );
+  cartItemQuantity.addEventListener('input', event => updateItemQuantity(cartItem, event.target.value));
   cartItemDeleteButton.addEventListener('click', event => deleteItem(cartItem, event));
   return cartItemClone;
 }
@@ -47,9 +44,7 @@ async function createCartItemElement(cartItem) {
  */
 function updateItemQuantity(cartItem, value) {
   let cartData = JSON.parse(localStorage.getItem('cartData'));
-  const itemIndex = cartData.findIndex(
-    item => item.id === cartItem.id && item.color === cartItem.color
-  );
+  const itemIndex = cartData.findIndex(item => item.id === cartItem.id && item.color === cartItem.color);
   cartData[itemIndex].quantity = +value;
   localStorage.setItem('cartData', JSON.stringify(cartData));
   updateTotal();
@@ -57,14 +52,12 @@ function updateItemQuantity(cartItem, value) {
 
 /**
  * Delete an item in the cart (localStorage) and delete it in the DOM
- * @param { Object } cartItem - Product to delete as an object
- * @param { Event } cartItem - Event from the Delete Button Listener
+ * @param { Object } cartItem - Product to delete
+ * @param { Event } cartItem - Event from the Delete Button
  */
 function deleteItem(cartItem, event) {
   let cartData = JSON.parse(localStorage.getItem('cartData'));
-  const itemIndex = cartData.findIndex(
-    item => item.id === cartItem.id && item.color === cartItem.color
-  );
+  const itemIndex = cartData.findIndex(item => item.id === cartItem.id && item.color === cartItem.color);
   event.target.closest('.cart__item').remove();
   cartData.splice(itemIndex, 1);
   localStorage.setItem('cartData', JSON.stringify(cartData));
@@ -93,7 +86,7 @@ function initOrderForm() {
   inputsValidation(inputs);
   form.addEventListener('submit', event => {
     event.preventDefault();
-    isFormValid(inputs) && sendOrder(formatOrder(form));
+    isFormValid(inputs) && sendOrder(formatedOrder(form));
   });
 }
 
@@ -182,7 +175,7 @@ function isFormValid(inputs) {
  * @param { Element } form - All inputs of the form
  * @return { Object } - Returns an object containing a 'contact' object and a 'products' array
  */
-function formatOrder(form) {
+function formatedOrder(form) {
   let cartData = JSON.parse(localStorage.getItem('cartData'));
   const formData = new FormData(form);
   const formEntries = formData.entries();
@@ -206,18 +199,7 @@ function formatOrder(form) {
  */
 function sendOrder(orderData) {
   if (orderData.products && orderData.products.length > 0) {
-    const fetchSettings = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(orderData)
-    };
-    fetch(`${apiUrl}/api/products/order`, fetchSettings)
-      .then(response => response.json())
-      .then(bodyResponse => {
-        localStorage.setItem('cartData', JSON.stringify([]));
-        window.location.href = `./confirmation.html?orderid=${bodyResponse.orderId}`;
-      })
-      .catch(error => alert(`Votre commande n'a pas pu aboutir (${error.message})`));
+    postApiOrder(orderData);
   } else {
     alert('Votre panier est vide, impossible de confirmer la commande');
   }
