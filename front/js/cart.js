@@ -4,9 +4,13 @@ import { getApiData, postApiOrder } from './utils.js';
 displayCart();
 initOrderForm();
 
+function getCartData() {
+  return JSON.parse(localStorage.getItem('cartData'));
+}
+
 // Displays the products present in the cart (retrieved from the localStorage)
 async function displayCart() {
-  let cartData = JSON.parse(localStorage.getItem('cartData'));
+  let cartData = getCartData();
   const container = document.querySelector('#cart__items');
   for (const cartItem of cartData) {
     const cartItemElement = await createCartItemElement(cartItem);
@@ -43,7 +47,7 @@ async function createCartItemElement(cartItem) {
  * @param { Number } value - Quantity input value
  */
 function updateItemQuantity(cartItem, value) {
-  let cartData = JSON.parse(localStorage.getItem('cartData'));
+  let cartData = getCartData();
   const itemIndex = cartData.findIndex(item => item.id === cartItem.id && item.color === cartItem.color);
   cartData[itemIndex].quantity = +value;
   localStorage.setItem('cartData', JSON.stringify(cartData));
@@ -56,7 +60,7 @@ function updateItemQuantity(cartItem, value) {
  * @param { Event } cartItem - Event from the Delete Button
  */
 function deleteItem(cartItem, event) {
-  let cartData = JSON.parse(localStorage.getItem('cartData'));
+  let cartData = getCartData();
   const itemIndex = cartData.findIndex(item => item.id === cartItem.id && item.color === cartItem.color);
   event.target.closest('.cart__item').remove();
   cartData.splice(itemIndex, 1);
@@ -66,7 +70,7 @@ function deleteItem(cartItem, event) {
 
 // Update Total quantity & Total price on the page (Check the price of products in the API to improve security)
 async function updateTotal() {
-  let cartData = JSON.parse(localStorage.getItem('cartData'));
+  let cartData = getCartData();
   const productsData = await getApiData();
   const totalQuantityContainer = document.querySelector('#totalQuantity');
   const totalPriceContainer = document.querySelector('#totalPrice');
@@ -130,7 +134,7 @@ function checkRegex(input) {
     case 'email':
       regex =
         /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      message = "L'email n'est pas au format standard ( exemple@mail.fr ) ";
+      message = "L'email n'est pas au bon format ( exemple@mail.fr ) ";
       break;
   }
   if (input.value.match(regex)) {
@@ -176,7 +180,7 @@ function isFormValid(inputs) {
  * @return { Object } - Returns an object containing a 'contact' object and a 'products' array
  */
 function formatedOrder(form) {
-  let cartData = JSON.parse(localStorage.getItem('cartData'));
+  let cartData = getCartData();
   const formData = new FormData(form);
   const formEntries = formData.entries();
   let contactObject = Object.fromEntries(formEntries);
