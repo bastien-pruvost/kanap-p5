@@ -58,10 +58,13 @@ function addToCart(id, color, quantity) {
   const cartData = JSON.parse(localStorage.getItem('cartData')) || [];
   const product = { id, color, quantity };
   const productAlreadyInCart = cartData.findIndex(product => product.id === id && product.color === color);
-  if (quantity > 0 && quantity <= 100) {
+  let totalProductQuantity = cartData[productAlreadyInCart]
+    ? quantity + cartData[productAlreadyInCart].quantity
+    : quantity;
+  if (totalProductQuantity > 0 && totalProductQuantity <= 100) {
     productAlreadyInCart === -1 ? cartData.push(product) : (cartData[productAlreadyInCart].quantity += quantity);
   } else {
-    alert('La quantité de produit à ajouter au panier doit se trouver entre 1 et 100');
+    alert('La quantité totale du produit à ajouter au panier doit se trouver entre 1 et 100');
   }
   localStorage.setItem('cartData', JSON.stringify(cartData));
 }

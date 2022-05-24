@@ -5,7 +5,7 @@ displayCart();
 initOrderForm();
 
 function getCartData() {
-  return JSON.parse(localStorage.getItem('cartData'));
+  return JSON.parse(localStorage.getItem('cartData')) || [];
 }
 
 // Displays the products present in the cart (retrieved from the localStorage)
@@ -36,7 +36,7 @@ async function createCartItemElement(cartItem) {
   cartItemClone.querySelector('.cart-item-color').textContent = cartItem.color;
   cartItemClone.querySelector('.cart-item-price').textContent = `${productData.price} €`;
   cartItemQuantity.value = cartItem.quantity;
-  cartItemQuantity.addEventListener('input', event => updateItemQuantity(cartItem, event.target.value));
+  cartItemQuantity.addEventListener('change', event => updateItemQuantity(cartItem, event.target));
   cartItemDeleteButton.addEventListener('click', event => deleteItem(cartItem, event));
   return cartItemClone;
 }
@@ -46,18 +46,26 @@ async function createCartItemElement(cartItem) {
  * @param { Object } cartItem - Product to update as an object
  * @param { Number } value - Quantity input value
  */
-function updateItemQuantity(cartItem, value) {
-  let cartData = getCartData();
+function updateItemQuantity(cartItem, target) {
+  const cartData = getCartData();
   const itemIndex = cartData.findIndex(item => item.id === cartItem.id && item.color === cartItem.color);
-  cartData[itemIndex].quantity = +value;
-  localStorage.setItem('cartData', JSON.stringify(cartData));
-  updateTotal();
+  if (target.value > 0 && target.value <= 100) {
+    cartData[itemIndex].quantity = +target.value;
+    localStorage.setItem('cartData', JSON.stringify(cartData));
+    updateTotal();
+  } else {
+    alert('La quantité totale du produit doit se trouver entre 1 et 100');
+    target.value = 1;
+    cartData[itemIndex].quantity = 1;
+    localStorage.setItem('cartData', JSON.stringify(cartData));
+    updateTotal();
+  }
 }
 
 /**
  * Delete an item in the cart (localStorage) and delete it in the DOM
  * @param { Object } cartItem - Product to delete
- * @param { Event } cartItem - Event from the Delete Button
+ * @param { Event } event - Event from the Delete Button
  */
 function deleteItem(cartItem, event) {
   let cartData = getCartData();
