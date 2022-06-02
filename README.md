@@ -1,15 +1,34 @@
-# Kanap #
+# Kanap P5 - Openclassrooms
 
-This is the front end and back end server for Project 5 of the Web Developer path.
+## About the project
 
-### Back end Prerequisites ###
+The project consists in coding the javascript part of an e-commerce site of sofas.
+Here is the frontend and the backend
 
-You will need to have Node and `npm` installed locally on your machine.
+### Built with
 
-### Back end Installation ###
+- JavaScript
 
-Clone this repo. From the "back" folder of the project, run `npm install`. You 
-can then run the server with `node server`. 
+## Launch the backend server
+
+You must have Node.js installed.
+
+### Clone the repo :
+
+`git clone https://github.com/Dev-BastienPruvost/kanap-p5.git`
+
+### Install dependencies :
+
+Go in the backend folder and run the command :
+`npm install`
+
+### Start node.js live server :
+
+`node server`
 The server should run on `localhost` with default port `3000`. If the
 server runs on another port for any reason, this is printed to the
 console when the server starts, e.g. `Listening on port 3001`.
+
+## Credits
+
+Project developed by Dev-BastienPruvost
